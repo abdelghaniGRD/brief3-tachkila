@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <div
+        class="flex justify-between bg-slate-700 color text-white items-center"
+      >
+        <div class="flex w-20 h-20px">
+          <div class="logo">
+            <img src="images/image_ec4fb5e3.jpg" alt="logo" />
+          </div>
+          <p>TACHKILA</p>
+        </div>
+
+        <div class="team-info flex gap-5">
+          <div class="team1 text-yellow-300">GB</div>
+          <div class="team2 text-blue-700">DEF</div>
+          <div class="team3 text-green-300">MIL</div>
+          <div class="team4 text-orange-500">ATT</div>
+        </div>
+
+        <div class="team-schema flex gap-10 items-center">
+          <p>Schéma</p>
+          <div class="schema p-1">4-4-2</div>
+        </div>
+      </div>
+    </header>
+    <main class="flex">
+      <aside class="w-48">
+        <div class="selective flex flex-wrap justify-between gap-1">
+          <button
+            class="add-new-player bg-lime-500 p-1.5 text-white rounded-md mt-2 w-full"
+          >
+            + Ajouter un joueur
+          </button>
+          <p>Effectif</p>
+          <div class="number-Of-players">1 joueur(s)</div>
+        </div>
+
+        <div class="text text-slate-500 font-medium mt-2">
+          cliquer sur un joueur placé pour voir sa case sur le terrain.pour
+          modifie, pour supprimer.
+        </div>
+
+        <div class="selection-menu mt-3">
+          <div class="selected-player">
+            <div class="player-number">1</div>
+            <div class="player-name">bono</div>
+            <div class="player-position">gardien</div>
+            <div class="edit">edit</div>
+            <div class="delete">delete</div>
+          </div>
+          <div class="players-list"></div>
+        </div>
+      </aside>
+      <section class="main">main content</section>
+    </main>
+  </body>
+</html>

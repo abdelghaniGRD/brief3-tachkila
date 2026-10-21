@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css" />
     <title>Document</title>
   </head>
-  <body>
+  <body class="h-screen">
     <header>
       <div
         class="flex justify-between bg-slate-700 color text-white items-center"
@@ -32,35 +32,51 @@
         </div>
       </div>
     </header>
-    <main class="flex">
-      <aside class="w-48">
+    <main class="flex h-full">
+      <aside class="w-[220px] flex flex-col gap-3 bg-slate-600">
         <div class="selective flex flex-wrap justify-between gap-1">
           <button
             class="add-new-player bg-lime-500 p-1.5 text-white rounded-md mt-2 w-full"
           >
             + Ajouter un joueur
           </button>
-          <p>Effectif</p>
-          <div class="number-Of-players">1 joueur(s)</div>
+          <p class="text-white">Effectif</p>
+          <div class="number-Of-players text-white">1 joueur(s)</div>
         </div>
 
-        <div class="text text-slate-500 font-medium mt-2">
+        <div class="text font-medium mt-2 text-white">
           cliquer sur un joueur placé pour voir sa case sur le terrain.pour
           modifie, pour supprimer.
         </div>
 
         <div class="selection-menu mt-3">
-          <div class="selected-player">
-            <div class="player-number">1</div>
-            <div class="player-name">bono</div>
-            <div class="player-position">gardien</div>
-            <div class="edit">edit</div>
-            <div class="delete">delete</div>
+          <div class="selected-player flex justify-between border-2">
+            <div class="info flex gap-1 justify-center items-center">
+              <div
+                class="player-number p-1 border-2 rounded-[50%] text-orange-600"
+              >
+                1
+              </div>
+              <div class="player-name">bono</div>
+              <div class="player-position text-orange-600">gardien</div>
+            </div>
+            <div class="actions flex items-center">
+              <div class="edit">edit</div>
+              <div class="delete">delete</div>
+            </div>
           </div>
-          <div class="players-list"></div>
+          <div class="players-list mt-2">
+            <select name="w-full border rounded p-2 player-selection ">
+              <option value="1">player 1</option>
+              <option value="2">player 2</option>
+              <option value="3">player 3</option>
+            </select>
+          </div>
         </div>
       </aside>
-      <section class="main">main content</section>
+      <section class="main w-full m-auto">
+        <div class="fields justify-center"></div>
+      </section>
     </main>
   </body>
 </html>

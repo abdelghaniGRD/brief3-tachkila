@@ -15,7 +15,7 @@ The project is currently an early interface scaffold. The page has a header, a s
 - Save the squad and lineup in `localStorage` so they persist after refresh.
 - Provide responsive layouts and accessible, clear feedback for user actions.
 
-- Planification in jira:
+- Planification in jira: https://gouroudabdelghani.atlassian.net/jira/software/projects/SCRUM/boards/1?filter=&groupBy=none&atlOrigin=eyJpIjoiNWQ1MzY1Njk3ZDgzNDNkMWJkOTVlZGU4NGJhNmFlNGIiLCJwIjoiaiJ9
 
 Optional enhancements include filtering by role, automatic placement, highlighting a player's pitch position, and drag-and-drop placement.
 

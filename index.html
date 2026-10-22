@@ -187,15 +187,16 @@
           <div class="field bg-slate-700 rounded-sm"></div>
         </div>
       </section>
-      <div class="bg-black/60">
+      <div class="bg-black/60 absolute w-[100%] h-[100%]">
         <div
-          class="addEditPlayerCard absolute top-[calc(50%-140px)] left-[calc(50%-150px)] bg-gray-500 text-white bg-black/60"
+          class="addEditPlayerCard absolute top-[calc(50%-140px)] left-[calc(50%-150px)] bg-gray-500 text-white"
         >
           <div class="row1 flex justify-between">
             <div class="title font-medium">Aouter un joueur</div>
             <button class="close text-slate-900">x</button>
           </div>
           <div class="row2 flex flex-col">
+            <!-- full name -->
             <label for="playerName" class="text-xs">Nom Complete</label>
             <input
               type="text"
@@ -204,22 +205,73 @@
               placeholder="Ex. ayoub mansouri"
             />
           </div>
-          <div class="postes flex flex-wrap gap-[1%] gap-y-[10px]">
-            <p class="w-[100%]">poste</p>
-            <!-- inputs choices -->
-            <input
-              id="gardien"
-              type="radio"
-              value="Gardien"
-              class="poste bg-slate-800 rounded-md before:content-[''] before:bg-orange-500 before:rounded-[50%] before:inline-block before:w-[6px] before:h-[6px] before:top-[50%]"
-            />
-            <label for="gardien">Gardien</label>
+          <div class="postes">
+            <form class="">
+              <p class="w-[100%]">poste</p>
+              <!-- inputs choices -->
+              <div class="flex justify-center">
+                <div
+                  class="flex gap-1 w-[50%] border rounded-md p-1 has-[:checked]:border-orange-500"
+                >
+                  <input
+                    name="postes"
+                    checked
+                    id="gardien"
+                    type="radio"
+                    value="Gardien"
+                    class="poste bg-slate-800 rounded-md before:content-[''] before:bg-orange-500 before:rounded-[50%] before:inline-block before:w-[6px] before:h-[6px] before:top-[50%]"
+                  />
+                  <label for="gardien">Gardien</label>
+                </div>
+                <!-- defender -->
+                <div
+                  class="flex gap-1 w-[50%] border rounded-md p-2 has-[:checked]:border-blue-500"
+                >
+                  <input
+                    name="postes"
+                    id="defender"
+                    type="radio"
+                    value="defender"
+                    class="poste bg-slate-800 rounded-md before:content-[''] before:bg-blue-500 before:rounded-[50%] before:inline-block before:w-[6px] before:h-[6px] before:top-[50%]"
+                  />
+                  <label for="defender">Défenseur</label>
+                </div>
+              </div>
+              <!-- medium -->
+              <div class="flex justify-center">
+                <div
+                  class="flex gap-1 w-[50%] border rounded-md p-2 has-[:checked]:border-green-500"
+                >
+                  <input
+                    name="postes"
+                    id="medium"
+                    type="radio"
+                    value="medium"
+                    class="poste bg-slate-800 border rounded-md before:content-[''] before:bg-green-500 before:rounded-[50%] before:inline-block before:w-[6px] before:h-[6px] before:top-[50%]"
+                  />
+                  <label for="medium">Milleu</label>
+                </div>
+                <!-- attacker -->
+                <div
+                  class="flex gap-1 w-[50%] border rounded-md p-2 has-[:checked]:border-red-500"
+                >
+                  <input
+                    name="postes"
+                    id="attacker"
+                    type="radio"
+                    value="attacker"
+                    class="poste bg-slate-800 rounded-md before:content-[''] before:bg-red-500 before:rounded-[50%] before:inline-block before:w-[6px] before:h-[6px] before:top-[50%]"
+                  />
+                  <label for="attacker">Milleu</label>
+                </div>
+              </div>
+            </form>
           </div>
-          <div class="row3">
+          <div class="row3 flex flex-col">
             <label for="playerNumber">Numéro (1 a 99)</label>
             <input id="playerNumber" name="playerNumber" placeholder="Ex. 7" />
           </div>
-          <div class="actionButtons">
+          <div class="actionButtons p-2 flex justify-end gap-[10px]">
             <button class="add">Ajouter</button>
             <button class="cancel">Annuler</button>
           </div>

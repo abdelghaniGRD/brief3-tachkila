@@ -196,25 +196,30 @@
         <div
           class="addEditPlayerCard flex flex-col gap-[20px] absolute top-[calc(50%-140px)] left-[calc(50%-150px)] bg-gray-500 text-white w-[250px]"
         >
-          <div class="row1 flex justify-between">
-            <div class="title font-medium">Aouter un joueur</div>
-            <button class="close text-slate-900">x</button>
-          </div>
-          <div class="row2 flex flex-col">
-            <!-- full name -->
-            <label for="playerName" class="text-xs">Nom Complete</label>
-            <input
-              type="text"
-              id="playerName"
-              name="playerName"
-              placeholder="Ex. ayoub mansouri"
-            />
-          </div>
-          <div class="postes">
-            <form class="">
+          <form id="form">
+            <div class="row1 flex justify-between">
+              <div class="title font-medium">Aouter un joueur</div>
+              <button class="close text-slate-900">x</button>
+            </div>
+            <div class="row2 flex flex-col">
+              <!-- full name -->
+              <label for="playerName" class="text-xs">Nom Complete</label>
+              <input
+                class="text-black"
+                type="text"
+                id="playerName"
+                name="playerName"
+                placeholder="Ex. ayoub mansouri"
+              />
+              <label class="nameErrLabel hidden text-red-500 hiddden"
+                >no special characters or numbers</label
+              >
+            </div>
+            <div class="postes">
               <p class="w-[100%]">poste</p>
               <!-- inputs choices -->
               <div class="flex justify-center">
+                <!-- gardien -->
                 <div
                   class="flex gap-1 w-[50%] border rounded-md p-1 has-[:checked]:border-orange-500"
                 >
@@ -223,7 +228,7 @@
                     checked
                     id="gardien"
                     type="radio"
-                    value="Gardien"
+                    value="gardien"
                     class="poste appearance-none rounded-md before:content-[''] before:bg-orange-500 before:rounded-[50%] before:inline-block before:w-[6px] before:h-[6px] before:top-[50%]"
                   />
                   <label for="gardien">Gardien</label>
@@ -242,8 +247,8 @@
                   <label for="defender">Défenseur</label>
                 </div>
               </div>
-              <!-- medium -->
               <div class="flex justify-center">
+                <!-- medium -->
                 <div
                   class="flex gap-1 w-[50%] border rounded-md p-2 has-[:checked]:border-green-500"
                 >
@@ -267,19 +272,31 @@
                     value="attacker"
                     class="poste appearance-none rounded-md before:content-[''] before:bg-red-500 before:rounded-[50%] before:inline-block before:w-[6px] before:h-[6px] before:top-[50%]"
                   />
-                  <label for="attacker">Milleu</label>
+                  <label for="attacker">Attaquant</label>
                 </div>
               </div>
-            </form>
-          </div>
-          <div class="row3 flex flex-col">
-            <label for="playerNumber">Numéro (1 a 99):</label>
-            <input id="playerNumber" name="playerNumber" placeholder="Ex. 7" />
-          </div>
-          <div class="actionButtons p-2 flex justify-end gap-[10px]">
-            <button class="add p-1 bg-green-500 rounded-md">Ajouter</button>
-            <button class="cancel p-1 bg-gray-900 rounded-md">Annuler</button>
-          </div>
+            </div>
+
+            <div class="row3 flex flex-col">
+              <label for="playerNumber">Numéro (1 a 99):</label>
+              <input
+                class="text-black"
+                id="playerNumber"
+                name="playerNumber"
+                placeholder="Ex. 7"
+              />
+              <label class="playerErrLabel hidden text-red-500 hiddden"
+                >Number must be between 1 and 99, and not taken by another
+                player</label
+              >
+            </div>
+            <div class="actionButtons p-2 flex justify-end gap-[10px]">
+              <button type="submit" class="add p-1 bg-green-500 rounded-md">
+                Ajouter
+              </button>
+              <button class="cancel p-1 bg-gray-900 rounded-md">Annuler</button>
+            </div>
+          </form>
         </div>
       </div>
     </main>

@@ -68,6 +68,7 @@ function clearPlayersList() {
     child.remove();
   }
 }
+
 //for displaying the players list on the ui
 function displayPlayers() {
   //first we need to clear the players
@@ -137,17 +138,29 @@ function displayPlayers() {
       "player-selection"
     );
 
+    for (const bench of benches) {
+      let option = document.createElement("option");
+      option.textContent = bench.name;
+      option.setAttribute("value", bench.id);
+      benchesSelect.append(option);
+    }
+
     //append edit and cancel buttons to actions div
     actionsDiv.append(editAction, deleteAction);
 
-    p.append(playerNumber, playerName, playerPosition, actionsDiv);
+    p.append(
+      playerNumber,
+      playerName,
+      playerPosition,
+      actionsDiv,
+      benchesSelect
+    );
 
     playersParent.append(p);
   }
 }
 
 //open the modal window
-
 const btnOpenModal = document.querySelector("#btnOpenModal");
 btnOpenModal.addEventListener("click", () => {
   const modal = document.querySelector(".cardParent");

@@ -1,7 +1,5 @@
-let arr = [];
-
 let benches = [
-  { id: 1, name: "GB - Gardien" },
+  { id: 1, name: "GB - Gardien", gridArea: "3/1/6/2" },
   { id: 2, name: "DB - Défenseur gauche" },
   { id: 3, name: "DF - Défenseur central 1" },
   { id: 4, name: "DF - Défenseur central 2" },
@@ -13,11 +11,33 @@ let benches = [
   { id: 10, name: "BU - Buteur 1" },
   { id: 11, name: "BU - Buteur 2" },
 ];
+
+let arr = [
+  {
+    id: crypto.randomUUID(),
+    name: "abdelghani",
+    position: "gardien",
+    playerNumber: 10,
+    bench: benches[0],
+  },
+];
+
 let hasError = false;
+
+const Status = Object.freeze({
+  addNewMode: 0,
+  editMode: 1,
+});
+
+let currentStatus = Status.addNewMode;
+const addEditPlayerCard = document.querySelector(".addEditPlayerCard");
+
+//displayer in the arr
+displayPlayers();
 
 //addNewPlayerToTheList
 function AddNewPalyer() {
-  console.log("add new player executed");
+  currentStatus = Status.addNewMode;
   //player name
   const playerName = document.querySelector("#playerName").value;
 
@@ -28,6 +48,7 @@ function AddNewPalyer() {
   //selected player number
   const playerNumber = Number(document.querySelector("#playerNumber").value);
   arr.push({
+    id: crypto.randomUUID(),
     name: playerName,
     position: selectedPostVal,
     playerNumber: playerNumber,
@@ -37,6 +58,65 @@ function AddNewPalyer() {
   displayPlayers();
 }
 
+//edit Player
+function editPlayer(id) {
+  currentStatus = Status.editMode;
+
+  //show the modal
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+
+  //assign the id to the addedit player card
+  document.querySelector(".addEditPlayerCard").setAttribute("data-id", id);
+
+  const editButton = modal.querySelector(".add");
+  editButton.textContent = "editer";
+  const player = getPlayerById(id);
+
+  const playerName = modal.querySelector("#playerName");
+  playerName.value = player.name;
+
+  const playerNumber = modal.querySelector("#playerNumber");
+  playerNumber.value = player.playerNumber;
+
+  const selectedPost = document.querySelector(`#${player.position}`);
+  selectedPost.checked = true;
+}
+
+function save() {
+  //player name
+  const playerName = document.querySelector("#playerName").value;
+
+  //player poste
+  const selectedPost = document.querySelector('input[name="postes"]:checked');
+  const selectedPostVal = selectedPost.value;
+
+  //selected player number
+  const playerNumber = Number(document.querySelector("#playerNumber").value);
+
+  if (currentStatus === Status.addNewMode) {
+    arr.push({
+      id: crypto.randomUUID(),
+      name: playerName,
+      position: selectedPostVal,
+      playerNumber: playerNumber,
+    });
+  } else {
+    const playerId = addEditPlayerCard.dataset.id;
+
+    arr.forEach((player, index) => {
+      if (player.id == playerId) {
+        arr[index].name = playerName;
+        arr[index].position = selectedPostVal;
+        arr[index].playerNumber = playerNumber;
+
+        return;
+      }
+    });
+  }
+  displayPlayers();
+  ClearModal();
+}
 //check if player number already isPlayerNumberNotTaken
 function isPlayerNumberNotTaken(val) {
   if (arr.length == 0) return true;
@@ -80,6 +160,8 @@ function displayPlayers() {
 
     // player div
     let p = document.createElement("div");
+    //set player attribute id
+    p.setAttribute("data-id", player.id);
 
     p.classList.add(
       "player",
@@ -119,10 +201,10 @@ function displayPlayers() {
     editAction.classList.add("edit");
     editAction.textContent = "edit";
 
-    //cancel button
+    //delete button
     let deleteAction = document.createElement("button");
     deleteAction.classList.add("delete");
-    deleteAction.textContent = "edit";
+    deleteAction.textContent = "delete";
 
     //benches div
     let benchesDiv = document.createElement("div");
@@ -159,6 +241,13 @@ function displayPlayers() {
     playersParent.append(p);
   }
 }
+
+function getPlayerById(id) {
+  const p = arr.find((p) => p.id === id);
+  return p;
+}
+
+const modal = document.querySelector(".cardParent");
 
 //open the modal window
 const btnOpenModal = document.querySelector("#btnOpenModal");
@@ -221,5 +310,35 @@ const btnAddNewPlayer = document
   .querySelector("#form")
   .addEventListener("submit", (e) => {
     e.preventDefault();
-    AddNewPalyer();
+    save();
   });
+
+//add edit and delete delegation to parent player div
+const playerParent = document.querySelector(".players-list");
+
+playerParent.addEventListener("click", (e) => {
+  //check if the clicked element is the edit button
+
+  if (e.target.classList.contains("edit")) {
+    //find the closest parent palyer div
+    const playerDiv = e.target.closest(".player");
+
+    //extract the id from data set
+    const playerId = playerDiv.dataset.id;
+
+    editPlayer(playerId);
+  } else if (e.target.classList.contains("edit")) {
+    //delete the player
+  }
+});
+
+playerParent.addEventListener("change", (e) => {
+  console.log("change");
+  const playerDiv = e.target.closest(".player");
+
+  //we need to extract the new selected option value
+
+  //then check if the position in the grid is free
+
+  //then change the player position
+});

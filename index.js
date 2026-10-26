@@ -1,8 +1,9 @@
 let benches = [
-  { id: 1, name: "GB - Gardien", gridArea: "3/1/6/2" },
-  { id: 2, name: "DB - Défenseur gauche" },
-  { id: 3, name: "DF - Défenseur central 1" },
-  { id: 4, name: "DF - Défenseur central 2" },
+  { id: 0, name: "sur le banc", gridArea: "0" },
+  { id: 1, name: "GB - Gardien" },
+  { id: 2, name: "DG - Défenseur gauche" },
+  { id: 3, name: "DC - Défenseur central 1" },
+  { id: 4, name: "DC - Défenseur central 2" },
   { id: 5, name: "DD - Défenseur droit" },
   { id: 6, name: "MG - Milieu gauche" },
   { id: 7, name: "MC - Milieu central 1" },
@@ -18,7 +19,7 @@ let arr = [
     name: "abdelghani",
     position: "gardien",
     playerNumber: 10,
-    bench: benches[0],
+    bench: benches[1],
   },
 ];
 
@@ -31,6 +32,8 @@ const Status = Object.freeze({
 
 let currentStatus = Status.addNewMode;
 const addEditPlayerCard = document.querySelector(".addEditPlayerCard");
+
+const selectPosition = document.querySelector(".player-select");
 
 //displayer in the arr
 displayPlayers();
@@ -117,6 +120,7 @@ function save() {
   displayPlayers();
   ClearModal();
 }
+
 //check if player number already isPlayerNumberNotTaken
 function isPlayerNumberNotTaken(val) {
   if (arr.length == 0) return true;
@@ -149,6 +153,10 @@ function clearPlayersList() {
   }
 }
 
+function assignUserToTheGrid(benchId, playerId) {
+  console.log("hello");
+  console.log(`position id: ${benchId} playerId: ${playerId}`);
+}
 //for displaying the players list on the ui
 function displayPlayers() {
   //first we need to clear the players
@@ -222,6 +230,7 @@ function displayPlayers() {
 
     for (const bench of benches) {
       let option = document.createElement("option");
+
       option.textContent = bench.name;
       option.setAttribute("value", bench.id);
       benchesSelect.append(option);
@@ -332,13 +341,33 @@ playerParent.addEventListener("click", (e) => {
   }
 });
 
+function isPositionFree(position) {
+  if (arr.length <= 0) return true;
+  for (const player of arr) {
+    if (player.bench.id === position) {
+      return false;
+    }
+    return true;
+  }
+}
+
+function addPlayerToTheGrid(playerId, selectedPosition) {
+  console.log(selectedPosition);
+  let divPositon = document.getElementsByClassName(String(selectedPosition));
+
+  console.log(divPositon);
+}
+
 playerParent.addEventListener("change", (e) => {
-  console.log("change");
   const playerDiv = e.target.closest(".player");
 
-  //we need to extract the new selected option value
+  const playerId = playerDiv.dataset.id;
 
-  //then check if the position in the grid is free
+  const selectedPosition = Number(playerDiv.children[4].value);
 
-  //then change the player position
+  if (selectedPosition == 0) return;
+
+  if (isPositionFree(selectedPosition)) {
+    addPlayerToTheGrid(playerId, selectedPosition);
+  }
 });

@@ -396,6 +396,18 @@ playerParent.addEventListener("change", (e) => {
   //get selected option id
   const selectedPosition = playerDiv.children[4].value;
 
+  if (Number(selectedPosition) === 0) {
+    clearPlayerFromOldSlot(getPlayerById(playerId));
+
+    // arr.map((p) => {
+    //   if (p.id === playerId) {
+    //     p.banch = [];
+    //   }
+    // });
+
+    return;
+  }
+
   // return the slot and the bool
   const rs = checkSlotInTheCurrentPositionIsFree(playerPosition);
 
@@ -446,6 +458,7 @@ function deletePlayer(playerId) {
 
   arr.splice(index, 1);
 }
+
 function checkSlotInTheCurrentPositionIsFree(playerPosition) {
   const slots = positions[playerPosition];
 

@@ -1,55 +1,68 @@
+- Presentation link: https://www.figma.com/deck/QrBP9C1ML8JZdtFcHieENO
+- Vercel link:
+- github repo: https://github.com/abdelghaniGRD/brief3-tachkila
+
 # Tachkila — Atlas FC Lineup Builder
 
-Tachkila is a responsive web application for managing an amateur football squad and building a starting lineup in a 4-4-2 formation. It is being developed as a learning project focused on HTML, CSS, JavaScript DOM manipulation, event handling, form validation, and responsive design.
+Tachkila is a browser-based squad and lineup builder for Atlas FC. It presents an amateur football squad beside a 4-4-2 pitch, with player roles and positions shown on the field.
 
-## Project status
+## Current status
 
-The project is currently an early interface scaffold. The page has a header, a squad sidebar, a 12 × 9 CSS Grid area, and a small custom stylesheet. The player management and lineup interactions described below are planned work and are not implemented yet.
+The project is a learning prototype. The interface and JavaScript implement a first pass at adding and editing players, assigning role-compatible field slots, changing assignments, and deleting players. Player data currently lives only in JavaScript memory and resets when the page reloads. The prototype still needs refinement before it can be treated as a complete or production-ready lineup tool.
 
-## Planned features
+## Current features
 
-- Add, edit, and delete players with a name, shirt number, and role.
-- Show players on the bench and assign them to compatible, vacant positions in a 4-4-2 formation.
-- Return players to the bench and keep squad and pitch counts in sync.
-- Validate player details, including unique shirt numbers.
-- Save the squad and lineup in `localStorage` so they persist after refresh.
-- Provide responsive layouts and accessible, clear feedback for user actions.
+- Add players with a name, role, and shirt number.
+- Validate names and shirt numbers in the player form.
+- Choose from goalkeeper, defender, midfielder, and attacker roles.
+- Assign players to the 11 positions in the 4-4-2 formation.
+- Edit or delete players and move them between compatible slots.
+- View the squad list and pitch layout in the browser.
 
-- Planification in jira: https://gouroudabdelghani.atlassian.net/jira/software/projects/SCRUM/boards/1?filter=&groupBy=none&atlOrigin=eyJpIjoiNWQ1MzY1Njk3ZDgzNDNkMWJkOTVlZGU4NGJhNmFlNGIiLCJwIjoiaiJ9
+## Planned improvements
 
-Optional enhancements include filtering by role, automatic placement, highlighting a player's pitch position, and drag-and-drop placement.
+- Persist the squad and lineup with `localStorage`.
+- Improve validation so names with spaces and common punctuation work, and validate consistently while editing.
+- Correct edge cases in assignment, deletion, and squad count updates.
+- Refine responsive layouts, accessibility, and user feedback.
+- Consider optional role filters, automatic placement, and drag-and-drop.
 
-## Roles and formation
+## Formation and roles
 
-The planned role groups are goalkeeper (GB), defender (DEF), midfielder (MIL), and attacker (ATT). The pitch will contain eleven positions: one goalkeeper, four defenders, four midfielders, and two attackers. A player can only occupy a vacant position that matches their role.
+The 4-4-2 pitch has eleven positions: one goalkeeper, four defenders, four midfielders, and two attackers. Players are grouped by role and should be assigned only to an open position for that role.
 
-## Tech stack
+| Role       | Pitch positions |
+| ---------- | --------------- |
+| Goalkeeper | GB              |
+| Defender   | DG, DC, DC, DD  |
+| Midfielder | MG, MC, MC, MD  |
+| Attacker   | BU, BU          |
+
+## Technology
 
 - HTML5
-- CSS3, including CSS Grid
+- CSS3 and CSS Grid
 - Tailwind CSS via its CDN
-- Vanilla JavaScript using DOM APIs
-- Browser `localStorage` for persistence (planned)
+- Vanilla JavaScript and browser DOM APIs
+- `localStorage` is planned but not yet implemented
 
 ## Run locally
 
-No build step or package installation is currently configured. Open `index.html` directly in a browser, or serve the project directory with any local static web server. An internet connection is needed for Tailwind CSS to load from its CDN.
+No build step or package installation is configured. Open `index.html` in a browser, or serve the project directory with a local static web server. An internet connection is needed to load Tailwind CSS from its CDN.
 
-## Project files
+## Files
 
 ```text
 .
-├── images/       # Image assets used by the page
+├── images/       # Image assets
 ├── index.html    # Page structure and Tailwind CDN reference
-├── index.js      # JavaScript entry point
-├── style.css     # Custom CSS, including the field grid
+├── index.js      # Player form, validation, list, and pitch interactions
+├── style.css     # Custom pitch grid styles
 └── README.md
 ```
 
 ## Development plan
 
-The brief schedules the work over seven days: build the page structure and grid, add the player form and validation, implement placement and squad actions, then add persistence, responsive refinements, and optional features. The target submission includes a GitHub repository and a Vercel deployment.
+The brief outlines a seven-day build covering the page structure and pitch, player form and validation, lineup actions, persistence, and responsive refinements. The target submission includes a GitHub repository and Vercel deployment.
 
-## Project brief
-
-The application is for Atlas FC coaches preparing a lineup. It aims to keep the player list, position assignments, and pitch display consistent while making routine lineup changes quick and intuitive.
+Jira planning board: [Tachkila project board](https://gouroudabdelghani.atlassian.net/jira/software/projects/SCRUM/boards/1?filter=&groupBy=none&atlOrigin=eyJpIjoiNWQ1MzY1Njk3ZDgzNDNkMWJkOTVlZGU4NGJhNmFlNGIiLCJwIjoiaiJ9)

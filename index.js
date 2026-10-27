@@ -44,7 +44,7 @@ const selectPosition = document.querySelector(".player-select");
 
 const slotError = document.querySelector(".slotNotEmptyError");
 
-//displayer in the arr
+let generalNotification = document.querySelector(".general-notification");
 
 //addNewPlayerToTheList
 // function AddNewPalyer() {
@@ -76,6 +76,7 @@ const slotError = document.querySelector(".slotNotEmptyError");
 // }
 
 //edit Player
+
 function editPlayer(id) {
   currentStatus = Status.editMode;
 
@@ -117,7 +118,6 @@ function save() {
     (slotId) => !arr.some((p) => p.banch?.id === slotId)
   );
 
-  console.log("available slot", availableSlot);
   if (!availableSlot || availableSlot === 0) {
     //there is no available slots
     slotError.classList.remove("hidden");
@@ -385,30 +385,65 @@ playerParent.addEventListener("click", (e) => {
   }
 });
 
-// function isPositionFree(position) {
-//   if (arr.length <= 0) return true;
-
-//   for (const player of arr) {
-//     if (player.bench.id === position) {
-//       return false;
-//     }
-//   }
-//   return true;
-// }
-
 playerParent.addEventListener("change", (e) => {
   const playerDiv = e.target.closest(".player");
 
   const playerId = playerDiv.dataset.id;
 
-  console.log(playerDiv);
+  //get player string position
+  const playerPosition = playerDiv.children[2].textContent;
 
-  const selectedPosition = Number(playerDiv.children[4].value);
+  //get selected option id
+  const selectedPosition = playerDiv.children[4].value;
 
-  if (selectedPosition == 0) return;
+  // return the slot and the bool
+  const rs = checkSlotInTheCurrentPositionIsFree(playerPosition);
 
-  if (isPositionFree(selectedPosition)) {
-    console.log("console log ");
-    addPlayerToTheGrid(playerId, selectedPosition);
+  if (rs.isExists) {
+    //here we check even if there is available empty slots,
+    //the user may select slots that doesnt belong
+    // to the player position, so we should notify him
+    if (!positions[playerPosition].includes(Number(selectedPosition))) {
+      generalNotification.classList.add(
+        "block",
+        "text-white",
+        "bg-red-600",
+        "absolute",
+        "w-[200px]",
+        "h-[70px]",
+        "bottom-[10px]",
+        "right-[10px]",
+        "rounded-[10px]",
+        "p-[10px]"
+      );
+
+      generalNotification.textContent =
+        "player slot does not belong to the selected position";
+
+      setTimeout(() => {
+        generalNotification.innerHTML = "";
+        generalNotification.className = "";
+      }, 4000);
+    } else {
+      //here the slot exists and the selected slot option is
+      // related to the player position
+      //******************************** */
+      //so here we need to remove the player from its
+      //current position then assign it to the new slot
+    }
   }
 });
+
+function checkSlotInTheCurrentPositionIsFree(playerPosition) {
+  const slots = positions[playerPosition];
+
+  const availableSlot = slots.find(
+    (slotId) => !arr.some((p) => p.banch?.id === slotId)
+  );
+
+  if (!availableSlot || availableSlot === 0) {
+    return { isExists: false, availableSlot: availableSlot };
+  } else {
+    return { isExists: true, availableSlot: availableSlot };
+  }
+}

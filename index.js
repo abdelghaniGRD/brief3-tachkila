@@ -1,5 +1,5 @@
 const benches = [
-  { id: 0, name: "sur le banc", gridArea: "0" },
+  { id: 0, name: "sur le banc" },
   { id: 1, name: "GB - Gardien" },
   { id: 2, name: "DG - Défenseur gauche" },
   { id: 3, name: "DC - Défenseur central 1" },
@@ -84,9 +84,11 @@ function editPlayer(id) {
   modal.classList.remove("hidden");
   modal.classList.add("flex");
 
+  const modalTitle = document.querySelector(".title");
+  modalTitle.textContent = "Modifier le joueur";
+
   //assign the id to the addedit player card
   document.querySelector(".addEditPlayerCard").setAttribute("data-id", id);
-
   const editButton = modal.querySelector(".add");
   editButton.textContent = "editer";
   const player = getPlayerById(id);
@@ -114,17 +116,20 @@ function save() {
 
   const slots = positions[selectedPostVal];
 
-  const availableSlot = slots.find(
-    (slotId) => !arr.some((p) => p.banch?.id === slotId)
-  );
-
-  if (!availableSlot || availableSlot === 0) {
-    //there is no available slots
-    slotError.classList.remove("hidden");
-    return;
-  }
+  // if(currentStatus===Status.editMode &&  selectedPostVal)
 
   if (currentStatus === Status.addNewMode) {
+    //find if a slot in selected position is free
+    const availableSlot = slots.find(
+      (slotId) => !arr.some((p) => p.banch?.id === slotId)
+    );
+
+    if (!availableSlot || availableSlot === 0) {
+      //there is no available slots
+      slotError.classList.remove("hidden");
+      return;
+    }
+
     arr.push({
       id: crypto.randomUUID(),
       name: playerName,
@@ -152,21 +157,53 @@ function save() {
     playerInfoDiv.append(number, pName);
 
     gridSlot.append(playerInfoDiv);
+
+    displayPlayers();
   } else {
     const playerId = addEditPlayerCard.dataset.id;
 
-    arr.forEach((player, index) => {
-      if (player.id == playerId) {
-        arr[index].name = playerName;
-        arr[index].position = selectedPostVal;
-        arr[index].playerNumber = playerNumber;
+    const player = getPlayerById(playerId);
 
+    if (selectedPostVal === player.position) {
+      arr.forEach((player, index) => {
+        if (player.id == playerId) {
+          arr[index].name = playerName;
+
+          arr[index].playerNumber = playerNumber;
+
+          return;
+        }
+      });
+    } else {
+      //find if a slot in selected position is free
+      const availableSlot = slots.find(
+        (slotId) => !arr.some((p) => p.banch?.id === slotId)
+      );
+
+      if (!availableSlot || availableSlot === 0) {
+        //there is no available slots
+        slotError.classList.remove("hidden");
         return;
       }
-    });
+
+      // look for the player and update the player info
+      arr.forEach((player, index) => {
+        if (player.id == playerId) {
+          arr[index].name = playerName;
+          arr[index].position = selectedPostVal;
+
+          arr[index].playerNumber = playerNumber;
+          arr[index].banch = {
+            id: availableSlot,
+            name: `position ${availableSlot}`,
+          };
+          return;
+        }
+      });
+    }
+    displayPlayers();
+    ClearModal();
   }
-  displayPlayers();
-  ClearModal();
 }
 
 //check if player number already isPlayerNumberNotTaken
@@ -397,14 +434,10 @@ playerParent.addEventListener("change", (e) => {
   const selectedPosition = playerDiv.children[4].value;
 
   if (Number(selectedPosition) === 0) {
-    clearPlayerFromOldSlot(getPlayerById(playerId));
-
-    // arr.map((p) => {
-    //   if (p.id === playerId) {
-    //     p.banch = [];
-    //   }
-    // });
-
+    const player = getPlayerById(playerId);
+    clearPlayerFromOldSlot(player);
+    player.banch = benches[0];
+    displayPlayers();
     return;
   }
 
@@ -415,6 +448,9 @@ playerParent.addEventListener("change", (e) => {
     //here we check even if there is available empty slots,
     //the user may select slots that doesnt belong
     // to the player position, so we should notify him
+    console.log(
+      `player position: ${playerPosition} includes: ${selectedPosition}`
+    );
     if (!positions[playerPosition].includes(Number(selectedPosition))) {
       generalNotification.classList.add(
         "block",
@@ -428,7 +464,7 @@ playerParent.addEventListener("change", (e) => {
         "rounded-[10px]",
         "p-[10px]"
       );
-
+      console.log("is executed");
       generalNotification.textContent =
         "player slot does not belong to the selected position";
 
@@ -452,11 +488,11 @@ function deletePlayer(playerId) {
   console.log("delete executed");
   const index = arr.findIndex((p) => p.id === playerId);
 
-  displayPlayers();
-
   clearPlayerFromOldSlot(getPlayerById(playerId));
 
   arr.splice(index, 1);
+
+  displayPlayers();
 }
 
 function checkSlotInTheCurrentPositionIsFree(playerPosition) {
@@ -556,8 +592,14 @@ function assignUserToGridSlot(slotDivId, playerId) {
 }
 
 function clearPlayerFromOldSlot(player) {
-  const div = document.getElementsByClassName(player.banch.id)[0];
-  const content = div.childNodes[0].textContent.trim();
+  const slotId = player?.banch?.id;
+  if (slotId == null || Number(slotId) === 0) return;
+
+  const div = document.getElementsByClassName(String(slotId))[0];
+  if (!div) return;
+
+  const content = div.childNodes[0]?.textContent?.trim();
+  if (!content) return;
   div.innerHTML = "";
   div.textContent = content;
 }

@@ -1,5 +1,5 @@
 - Presentation link: https://www.figma.com/deck/QrBP9C1ML8JZdtFcHieENO
-- Vercel link:
+- Vercel link: https://vercel.com/abdelghanigrds-projects/tachkila/7HZTYci6vLDwwv7AQKAzZz7WB4RV
 - github repo: https://github.com/abdelghaniGRD/brief3-tachkila
 
 # Tachkila — Atlas FC Lineup Builder

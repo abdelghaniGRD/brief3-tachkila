@@ -196,11 +196,6 @@ function clearPlayersList() {
   parent.innerHTML = "";
 }
 
-function assignUserToTheGrid(benchId, playerId) {
-  console.log("hello");
-  console.log(`position id: ${benchId} playerId: ${playerId}`);
-}
-
 //for displaying the players list on the ui
 function displayPlayers() {
   //first we need to clear the players
@@ -380,8 +375,13 @@ playerParent.addEventListener("click", (e) => {
     const playerId = playerDiv.dataset.id;
 
     editPlayer(playerId);
-  } else if (e.target.classList.contains("edit")) {
-    //delete the player
+  } else if (e.target.classList.contains("delete")) {
+    //find the closest parent palyer div
+    const playerDiv = e.target.closest(".player");
+
+    //extract the id from data set
+    const playerId = playerDiv.dataset.id;
+    deletePlayer(playerId);
   }
 });
 
@@ -430,10 +430,22 @@ playerParent.addEventListener("change", (e) => {
       //******************************** */
       //so here we need to remove the player from its
       //current position then assign it to the new slot
+
+      assignUserToGridSlot(selectedPosition, playerId);
     }
   }
 });
 
+function deletePlayer(playerId) {
+  console.log("delete executed");
+  const index = arr.findIndex((p) => p.id === playerId);
+
+  displayPlayers();
+
+  clearPlayerFromOldSlot(getPlayerById(playerId));
+
+  arr.splice(index, 1);
+}
 function checkSlotInTheCurrentPositionIsFree(playerPosition) {
   const slots = positions[playerPosition];
 
@@ -446,4 +458,93 @@ function checkSlotInTheCurrentPositionIsFree(playerPosition) {
   } else {
     return { isExists: true, availableSlot: availableSlot };
   }
+}
+
+function assignUserToGridSlot(slotDivId, playerId) {
+  //get player
+  const player = getPlayerById(playerId);
+  console.log(player.banch.id, slotDivId);
+  //we need to ckeck if the selected player is already
+  //in the selected slot, if(true) we do nothing else
+  //we should remove the player from current slot,then
+  //assign it to the new slot
+  if (Number(slotDivId) === Number(player.banch.id)) {
+    console.log("player is already in place");
+    return;
+  }
+
+  //if the slot is taken by another player
+  if (arr.find((u) => u.banch.id === Number(slotDivId))) {
+    generalNotification.classList.add(
+      "block",
+      "text-white",
+      "bg-red-600",
+      "absolute",
+      "w-[200px]",
+      "h-[70px]",
+      "bottom-[10px]",
+      "right-[10px]",
+      "rounded-[10px]",
+      "p-[10px]"
+    );
+
+    generalNotification.textContent =
+      "Banch is already taken by another player";
+
+    setTimeout(() => {
+      generalNotification.innerHTML = "";
+      generalNotification.className = "";
+    }, 4000);
+    return;
+  }
+  clearPlayerFromOldSlot(player);
+
+  const updatedArray = arr.map((p) => {
+    if (p.id === player.id) {
+      p.banch = benches[slotDivId];
+    }
+  });
+
+  //here we get the related slot div
+  let gridSlot = document.getElementsByClassName(benches[slotDivId].id)[0];
+
+  let playerInfoDiv = document.createElement("div");
+  playerInfoDiv.classList.add("flex", "justify-around", "gap-[15px]");
+
+  let number = document.createElement("span");
+  number.textContent = player.playerNumber;
+
+  let pName = document.createElement("span");
+  pName.textContent = player.name;
+
+  playerInfoDiv.append(number, pName);
+
+  gridSlot.append(playerInfoDiv);
+
+  generalNotification.classList.add(
+    "block",
+    "text-white",
+    "bg-green-700",
+    "absolute",
+    "w-[200px]",
+    "h-[70px]",
+    "bottom-[10px]",
+    "right-[10px]",
+    "rounded-[10px]",
+    "p-[10px]"
+  );
+
+  generalNotification.textContent = "Player placed succesfully";
+
+  setTimeout(() => {
+    generalNotification.innerHTML = "";
+    generalNotification.className = "";
+  }, 4000);
+}
+
+function clearPlayerFromOldSlot(player) {
+  const div = document.getElementsByClassName(player.banch.id)[0];
+  const content = div.childNodes[0].textContent.trim();
+  div.innerHTML = "";
+  div.textContent = content;
 }

@@ -1,4 +1,4 @@
-let benches = [
+const benches = [
   { id: 0, name: "sur le banc", gridArea: "0" },
   { id: 1, name: "GB - Gardien" },
   { id: 2, name: "DG - Défenseur gauche" },
@@ -13,14 +13,21 @@ let benches = [
   { id: 11, name: "BU - Buteur 2" },
 ];
 
+const positions = {
+  gardien: [1],
+  defender: [2, 3, 4, 5],
+  medium: [6, 7, 8, 9],
+  attacker: [10, 11],
+};
+
 let arr = [
-  {
-    id: crypto.randomUUID(),
-    name: "abdelghani",
-    position: "gardien",
-    playerNumber: 10,
-    bench: benches[1],
-  },
+  // {
+  //   id: crypto.randomUUID(),
+  //   name: "abdelghani",
+  //   position: "gardien",
+  //   playerNumber: 10,
+  //   bench: benches[1],
+  // },
 ];
 
 let hasError = false;
@@ -35,31 +42,38 @@ const addEditPlayerCard = document.querySelector(".addEditPlayerCard");
 
 const selectPosition = document.querySelector(".player-select");
 
+const slotError = document.querySelector(".slotNotEmptyError");
+
 //displayer in the arr
-displayPlayers();
 
 //addNewPlayerToTheList
-function AddNewPalyer() {
-  currentStatus = Status.addNewMode;
-  //player name
-  const playerName = document.querySelector("#playerName").value;
+// function AddNewPalyer() {
+//   console.log("executed");
+//   currentStatus = Status.addNewMode;
+//   //player name
+//   const playerName = document.querySelector("#playerName").value;
 
-  //player poste
-  const selectedPost = document.querySelector('input[name="postes"]:checked');
-  const selectedPostVal = selectedPost.value;
+//   //player poste
+//   const selectedPost = document.querySelector('input[name="postes"]:checked');
+//   const selectedPostVal = selectedPost.value;
 
-  //selected player number
-  const playerNumber = Number(document.querySelector("#playerNumber").value);
-  arr.push({
-    id: crypto.randomUUID(),
-    name: playerName,
-    position: selectedPostVal,
-    playerNumber: playerNumber,
-  });
+//   //selected player number
+//   const playerNumber = Number(document.querySelector("#playerNumber").value);
+//   console.log(selectedPostVal);
+//   const slots = positions[selectedPostVal];
 
-  ClearModal();
-  displayPlayers();
-}
+//   console.log(slots);
+
+//   arr.push({
+//     id: crypto.randomUUID(),
+//     name: playerName,
+//     position: selectedPostVal,
+//     playerNumber: playerNumber,
+//   });
+
+//   ClearModal();
+//   displayPlayers();
+// }
 
 //edit Player
 function editPlayer(id) {
@@ -97,13 +111,47 @@ function save() {
   //selected player number
   const playerNumber = Number(document.querySelector("#playerNumber").value);
 
+  const slots = positions[selectedPostVal];
+
+  const availableSlot = slots.find(
+    (slotId) => !arr.some((p) => p.banch?.id === slotId)
+  );
+
+  console.log("available slot", availableSlot);
+  if (!availableSlot || availableSlot === 0) {
+    //there is no available slots
+    slotError.classList.remove("hidden");
+    return;
+  }
+
   if (currentStatus === Status.addNewMode) {
     arr.push({
       id: crypto.randomUUID(),
       name: playerName,
       position: selectedPostVal,
       playerNumber: playerNumber,
+      banch: {
+        id: availableSlot,
+        name: `position ${availableSlot}`,
+      },
     });
+
+    let gridSlot = document.getElementsByClassName(
+      benches[availableSlot].id
+    )[0];
+
+    let playerInfoDiv = document.createElement("div");
+    playerInfoDiv.classList.add("flex", "justify-around", "gap-[15px]");
+
+    let number = document.createElement("span");
+    number.textContent = playerNumber;
+
+    let pName = document.createElement("span");
+    pName.textContent = playerName;
+
+    playerInfoDiv.append(number, pName);
+
+    gridSlot.append(playerInfoDiv);
   } else {
     const playerId = addEditPlayerCard.dataset.id;
 
@@ -145,18 +193,14 @@ function handleModalClose() {
 
 function clearPlayersList() {
   const parent = document.querySelector(".players-list");
-  const allChildren = parent.children;
-  if (allChildren.length <= 0) return;
-
-  for (let child of allChildren) {
-    child.remove();
-  }
+  parent.innerHTML = "";
 }
 
 function assignUserToTheGrid(benchId, playerId) {
   console.log("hello");
   console.log(`position id: ${benchId} playerId: ${playerId}`);
 }
+
 //for displaying the players list on the ui
 function displayPlayers() {
   //first we need to clear the players
@@ -235,7 +279,7 @@ function displayPlayers() {
       option.setAttribute("value", bench.id);
       benchesSelect.append(option);
     }
-
+    benchesSelect.value = player.banch.id;
     //append edit and cancel buttons to actions div
     actionsDiv.append(editAction, deleteAction);
 
@@ -341,33 +385,30 @@ playerParent.addEventListener("click", (e) => {
   }
 });
 
-function isPositionFree(position) {
-  if (arr.length <= 0) return true;
-  for (const player of arr) {
-    if (player.bench.id === position) {
-      return false;
-    }
-    return true;
-  }
-}
+// function isPositionFree(position) {
+//   if (arr.length <= 0) return true;
 
-function addPlayerToTheGrid(playerId, selectedPosition) {
-  console.log(selectedPosition);
-  let divPositon = document.getElementsByClassName(String(selectedPosition));
-
-  console.log(divPositon);
-}
+//   for (const player of arr) {
+//     if (player.bench.id === position) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
 
 playerParent.addEventListener("change", (e) => {
   const playerDiv = e.target.closest(".player");
 
   const playerId = playerDiv.dataset.id;
 
+  console.log(playerDiv);
+
   const selectedPosition = Number(playerDiv.children[4].value);
 
   if (selectedPosition == 0) return;
 
   if (isPositionFree(selectedPosition)) {
+    console.log("console log ");
     addPlayerToTheGrid(playerId, selectedPosition);
   }
 });

@@ -27,7 +27,7 @@ const savedPlayers = localStorage.getItem("tachkilaPlayers");
 if (savedPlayers) {
   arr = JSON.parse(savedPlayers);
 
-  arr = [];
+  displayPlayers();
 }
 
 //save the players in the browser
@@ -255,6 +255,10 @@ function showPlayerOnField(player) {
 function displayPlayers() {
   //first we need to clear the players
   clearPlayersList();
+
+  document.querySelector(".number-Of-players").textContent =
+    `${arr.length} joueur(s)`;
+
   if (arr.length === 0) return;
   for (const player of arr) {
     // parent

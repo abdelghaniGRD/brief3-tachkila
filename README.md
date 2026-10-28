@@ -9,7 +9,7 @@ Tachkila is a browser-based squad and lineup builder for Atlas FC. It presents a
 
 ## Current status
 
-The project is a learning prototype. The interface and JavaScript implement a first pass at adding and editing players, assigning role-compatible field slots, changing assignments, and deleting players. Player data currently lives only in JavaScript memory and resets when the page reloads. The prototype still needs refinement before it can be treated as a complete or production-ready lineup tool.
+The project is a learning prototype. The interface and JavaScript implement adding and editing players, assigning role-compatible field slots, changing assignments, and deleting players. Player data is saved in the browser with `localStorage`, so the squad and lineup are still there after the page reloads. The prototype still needs refinement before it can be treated as a complete or production-ready lineup tool.
 
 ## Current features
 
@@ -22,7 +22,6 @@ The project is a learning prototype. The interface and JavaScript implement a fi
 
 ## Planned improvements
 
-- Persist the squad and lineup with `localStorage`.
 - Improve validation so names with spaces and common punctuation work, and validate consistently while editing.
 - Correct edge cases in assignment, deletion, and squad count updates.
 - Refine responsive layouts, accessibility, and user feedback.
@@ -45,7 +44,7 @@ The 4-4-2 pitch has eleven positions: one goalkeeper, four defenders, four midfi
 - CSS3 and CSS Grid
 - Tailwind CSS via its CDN
 - Vanilla JavaScript and browser DOM APIs
-- `localStorage` is planned but not yet implemented
+- Browser `localStorage` for saving the squad and lineup
 
 ## Run locally
 

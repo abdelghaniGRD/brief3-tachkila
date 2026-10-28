@@ -20,15 +20,20 @@ const positions = {
   attacker: [10, 11],
 };
 
-let arr = [
-  // {
-  //   id: crypto.randomUUID(),
-  //   name: "abdelghani",
-  //   position: "gardien",
-  //   playerNumber: 10,
-  //   bench: benches[1],
-  // },
-];
+let arr = [];
+
+//load the saved players when the page opens
+const savedPlayers = localStorage.getItem("tachkilaPlayers");
+if (savedPlayers) {
+  arr = JSON.parse(savedPlayers);
+
+  arr = [];
+}
+
+//save the players in the browser
+function savePlayers() {
+  localStorage.setItem("tachkilaPlayers", JSON.stringify(arr));
+}
 
 let hasError = false;
 
@@ -141,22 +146,8 @@ function save() {
       },
     });
 
-    let gridSlot = document.getElementsByClassName(
-      benches[availableSlot].id
-    )[0];
-
-    let playerInfoDiv = document.createElement("div");
-    playerInfoDiv.classList.add("flex", "justify-around", "gap-[15px]");
-
-    let number = document.createElement("span");
-    number.textContent = playerNumber;
-
-    let pName = document.createElement("span");
-    pName.textContent = playerName;
-
-    playerInfoDiv.append(number, pName);
-
-    gridSlot.append(playerInfoDiv);
+    showPlayerOnField(arr[arr.length - 1]);
+    savePlayers();
 
     displayPlayers();
     handleModalClose();
@@ -176,6 +167,8 @@ function save() {
           return;
         }
       });
+      clearPlayerFromOldSlot(player);
+      showPlayerOnField(player);
     } else {
       //find if a slot in selected position is free
       const availableSlot = slots.find(
@@ -187,6 +180,8 @@ function save() {
         slotError.classList.remove("hidden");
         return;
       }
+
+      clearPlayerFromOldSlot(player);
 
       // look for the player and update the player info
       arr.forEach((player, index) => {
@@ -202,8 +197,10 @@ function save() {
           return;
         }
       });
+      showPlayerOnField(player);
     }
 
+    savePlayers();
     displayPlayers();
     handleModalClose();
   }
@@ -232,6 +229,26 @@ function handleModalClose() {
 function clearPlayersList() {
   const parent = document.querySelector(".players-list");
   parent.innerHTML = "";
+}
+
+function showPlayerOnField(player) {
+  const slotId = player.banch.id;
+  if (slotId === 0) return;
+
+  const gridSlot = document.getElementsByClassName(String(slotId))[0];
+  if (!gridSlot) return;
+
+  const playerInfoDiv = document.createElement("div");
+  playerInfoDiv.classList.add("flex", "justify-around", "gap-[15px]");
+
+  const number = document.createElement("span");
+  number.textContent = player.playerNumber;
+
+  const pName = document.createElement("span");
+  pName.textContent = player.name;
+
+  playerInfoDiv.append(number, pName);
+  gridSlot.append(playerInfoDiv);
 }
 
 //for displaying the players list on the ui
@@ -438,6 +455,7 @@ playerParent.addEventListener("change", (e) => {
     const player = getPlayerById(playerId);
     clearPlayerFromOldSlot(player);
     player.banch = benches[0];
+    savePlayers();
     displayPlayers();
     return;
   }
@@ -491,6 +509,7 @@ function deletePlayer(playerId) {
 
   arr.splice(index, 1);
 
+  savePlayers();
   displayPlayers();
 }
 
@@ -574,21 +593,8 @@ function assignUserToGridSlot(slotDivId, playerId) {
     }, 4000);
   });
 
-  //here we get the related slot div
-  let gridSlot = document.getElementsByClassName(benches[slotDivId].id)[0];
-
-  let playerInfoDiv = document.createElement("div");
-  playerInfoDiv.classList.add("flex", "justify-around", "gap-[15px]");
-
-  let number = document.createElement("span");
-  number.textContent = player.playerNumber;
-
-  let pName = document.createElement("span");
-  pName.textContent = player.name;
-
-  playerInfoDiv.append(number, pName);
-
-  gridSlot.append(playerInfoDiv);
+  showPlayerOnField(player);
+  savePlayers();
 
   // generalNotification.classList.add(
   //   "block",
@@ -623,3 +629,9 @@ function clearPlayerFromOldSlot(player) {
   div.innerHTML = "";
   div.textContent = content;
 }
+
+//show saved players in the list and on the field
+displayPlayers();
+arr.forEach((player) => {
+  showPlayerOnField(player);
+});

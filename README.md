@@ -1,6 +1,7 @@
 - Presentation link: https://www.figma.com/deck/QrBP9C1ML8JZdtFcHieENO
 - Vercel link: https://vercel.com/abdelghanigrds-projects/tachkila/7HZTYci6vLDwwv7AQKAzZz7WB4RV
 - github repo: https://github.com/abdelghaniGRD/brief3-tachkila
+- Jira: https://gouroudabdelghani.atlassian.net/jira/software/projects/SCRUM/boards/1?filter=&groupBy=none&atlOrigin=eyJpIjoiM2RlMzY2MDRjNzBhNGIzZTkyNmUxZGU0MWJhN2I4OWMiLCJwIjoiaiJ9
 
 # Tachkila — Atlas FC Lineup Builder
 

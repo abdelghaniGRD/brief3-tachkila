@@ -159,11 +159,13 @@ function save() {
     gridSlot.append(playerInfoDiv);
 
     displayPlayers();
+    handleModalClose();
   } else {
     const playerId = addEditPlayerCard.dataset.id;
 
     const player = getPlayerById(playerId);
 
+    //player has the same position so we dont need to check for pavailable slots ...
     if (selectedPostVal === player.position) {
       arr.forEach((player, index) => {
         if (player.id == playerId) {
@@ -201,8 +203,9 @@ function save() {
         }
       });
     }
+
     displayPlayers();
-    ClearModal();
+    handleModalClose();
   }
 }
 
@@ -216,16 +219,14 @@ function isPlayerNumberNotTaken(val) {
   return true;
 }
 
-function ClearModal() {
-  document.querySelector("#playerName").value = "";
-  document.querySelector("#playerNumber").value = "";
-}
-
 //for handling modal close
 function handleModalClose() {
   const modal = document.querySelector(".cardParent");
   modal.classList.remove("flex");
   modal.classList.add("hidden");
+
+  document.querySelector("#playerName").value = "";
+  document.querySelector("#playerNumber").value = "";
 }
 
 function clearPlayersList() {
@@ -448,9 +449,7 @@ playerParent.addEventListener("change", (e) => {
     //here we check even if there is available empty slots,
     //the user may select slots that doesnt belong
     // to the player position, so we should notify him
-    console.log(
-      `player position: ${playerPosition} includes: ${selectedPosition}`
-    );
+
     if (!positions[playerPosition].includes(Number(selectedPosition))) {
       generalNotification.classList.add(
         "block",
@@ -546,12 +545,33 @@ function assignUserToGridSlot(slotDivId, playerId) {
     }, 4000);
     return;
   }
+
   clearPlayerFromOldSlot(player);
 
   const updatedArray = arr.map((p) => {
     if (p.id === player.id) {
       p.banch = benches[slotDivId];
     }
+
+    generalNotification.classList.add(
+      "block",
+      "text-white",
+      "bg-green-500",
+      "absolute",
+      "w-[200px]",
+      "h-[70px]",
+      "bottom-[10px]",
+      "right-[10px]",
+      "rounded-[10px]",
+      "p-[10px]"
+    );
+
+    generalNotification.textContent = `${player.name} est placé en ${player.position}`;
+
+    setTimeout(() => {
+      generalNotification.innerHTML = "";
+      generalNotification.className = "";
+    }, 4000);
   });
 
   //here we get the related slot div
@@ -570,25 +590,25 @@ function assignUserToGridSlot(slotDivId, playerId) {
 
   gridSlot.append(playerInfoDiv);
 
-  generalNotification.classList.add(
-    "block",
-    "text-white",
-    "bg-green-700",
-    "absolute",
-    "w-[200px]",
-    "h-[70px]",
-    "bottom-[10px]",
-    "right-[10px]",
-    "rounded-[10px]",
-    "p-[10px]"
-  );
+  // generalNotification.classList.add(
+  //   "block",
+  //   "text-white",
+  //   "bg-green-700",
+  //   "absolute",
+  //   "w-[200px]",
+  //   "h-[70px]",
+  //   "bottom-[10px]",
+  //   "right-[10px]",
+  //   "rounded-[10px]",
+  //   "p-[10px]"
+  // );
 
-  generalNotification.textContent = "Player placed succesfully";
+  // generalNotification.textContent = "Player placed succesfully";
 
-  setTimeout(() => {
-    generalNotification.innerHTML = "";
-    generalNotification.className = "";
-  }, 4000);
+  // setTimeout(() => {
+  //   generalNotification.innerHTML = "";
+  //   generalNotification.className = "";
+  // }, 4000);
 }
 
 function clearPlayerFromOldSlot(player) {

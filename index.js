@@ -14,10 +14,10 @@ const benches = [
 ];
 
 const positions = {
-  gardien: [1],
-  defender: [2, 3, 4, 5],
-  medium: [6, 7, 8, 9],
-  attacker: [10, 11],
+  gardien: [1, 0],
+  defender: [2, 3, 4, 5, 0],
+  medium: [6, 7, 8, 9, 0],
+  attacker: [10, 11, 0],
 };
 
 let arr = [];
@@ -256,8 +256,9 @@ function displayPlayers() {
   //first we need to clear the players
   clearPlayersList();
 
-  document.querySelector(".number-Of-players").textContent =
-    `${arr.length} joueur(s)`;
+  document.querySelector(
+    ".number-Of-players"
+  ).textContent = `${arr.length} joueur(s)`;
 
   if (arr.length === 0) return;
   for (const player of arr) {
@@ -472,6 +473,10 @@ playerParent.addEventListener("change", (e) => {
     //the user may select slots that doesnt belong
     // to the player position, so we should notify him
 
+    // console.log("positions: ", positions);
+    // console.log("player position:", playerPosition);
+    // console.log("selected position: ", selectedPosition);
+    // console.log("positions[playerPosition]", positions[playerPosition]);
     if (!positions[playerPosition].includes(Number(selectedPosition))) {
       generalNotification.classList.add(
         "block",
@@ -506,7 +511,6 @@ playerParent.addEventListener("change", (e) => {
 });
 
 function deletePlayer(playerId) {
-  console.log("delete executed");
   const index = arr.findIndex((p) => p.id === playerId);
 
   clearPlayerFromOldSlot(getPlayerById(playerId));
@@ -600,25 +604,25 @@ function assignUserToGridSlot(slotDivId, playerId) {
   showPlayerOnField(player);
   savePlayers();
 
-  // generalNotification.classList.add(
-  //   "block",
-  //   "text-white",
-  //   "bg-green-700",
-  //   "absolute",
-  //   "w-[200px]",
-  //   "h-[70px]",
-  //   "bottom-[10px]",
-  //   "right-[10px]",
-  //   "rounded-[10px]",
-  //   "p-[10px]"
-  // );
+  generalNotification.classList.add(
+    "block",
+    "text-white",
+    "bg-green-700",
+    "absolute",
+    "w-[200px]",
+    "h-[70px]",
+    "bottom-[10px]",
+    "right-[10px]",
+    "rounded-[10px]",
+    "p-[10px]"
+  );
 
-  // generalNotification.textContent = "Player placed succesfully";
+  generalNotification.textContent = "Player placed succesfully";
 
-  // setTimeout(() => {
-  //   generalNotification.innerHTML = "";
-  //   generalNotification.className = "";
-  // }, 4000);
+  setTimeout(() => {
+    generalNotification.innerHTML = "";
+    generalNotification.className = "";
+  }, 4000);
 }
 
 function clearPlayerFromOldSlot(player) {
